@@ -180,7 +180,9 @@ nav{
 /* ============ nayami band ============ */
 .nayami{padding:56px 0;background:
   radial-gradient(70% 60% at 90% 10%, var(--pink) 0%, rgba(255,240,244,0) 55%),#fff}
-.nayami img{width:100%;max-width:980px;height:auto;margin:0 auto;display:block;border-radius:18px}
+.nayami img{width:100%;max-width:980px;height:auto;margin:0 auto;display:block;
+  -webkit-mask-image:radial-gradient(ellipse 92% 90% at 50% 50%, #000 55%, rgba(0,0,0,0) 100%);
+          mask-image:radial-gradient(ellipse 92% 90% at 50% 50%, #000 55%, rgba(0,0,0,0) 100%)}
 
 /* ============ value band ============ */
 .value{padding:74px 0;background:var(--bg-soft);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
@@ -574,7 +576,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
         <h3>手動で運用する場合</h3>
         <div class="big">30<small>時間 / 月</small></div>
         <p class="lbl">毎日1時間の作業を1ヶ月続けた場合</p>
-        <p class="note">手動作業は経営者がやる仕事ではありません。スタッフに任せても、その時間ぶんの人件費が発生します。<br><span style="color:var(--muted);font-size:12.5px">※ 東京都の最低賃金は<span class="ac" style="font-weight:600">1,226円/時</span>。自分で作業すると最低賃金を割ってしまいます。</span></p>
+        <p class="note">手動作業は経営者がやる仕事ではありません。スタッフに任せても、その時間ぶんの人件費が発生します。</p>
       </div>
       <div class="col us reveal">
         <h3>KIRINZにお任せの場合</h3>
