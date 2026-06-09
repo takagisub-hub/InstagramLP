@@ -316,6 +316,44 @@ nav{
 .vhead .who b{display:block;font-family:var(--jp);font-weight:700;font-size:14px;color:var(--ink)}
 .vhead .who span{font-size:12px;color:var(--muted)}
 
+/* ============ contact modal ============ */
+.cm-overlay{position:fixed;inset:0;z-index:2000;background:rgba(40,42,64,.55);
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;visibility:hidden;transition:opacity .25s}
+.cm-overlay.open{opacity:1;visibility:visible}
+.cm{background:#fff;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;
+  border-radius:22px;box-shadow:0 40px 80px -20px rgba(40,42,64,.5);
+  transform:translateY(18px) scale(.98);transition:transform .25s;position:relative}
+.cm-overlay.open .cm{transform:none}
+.cm-head{padding:26px 26px 6px;position:relative}
+.cm-head .eyebrow{justify-content:flex-start}.cm-head .eyebrow::before{display:none}
+.cm-head h3{font-family:var(--display);font-weight:700;color:var(--ink);font-size:22px;margin-top:8px;letter-spacing:.03em}
+.cm-head p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.7}
+.cm-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;cursor:pointer;
+  background:var(--bg-soft);border-radius:50%;color:var(--ink-2);display:grid;place-items:center;transition:background .2s}
+.cm-close:hover{background:var(--pink-2)}
+.cm-close svg{width:18px;height:18px}
+.cm-body{padding:14px 26px 26px}
+.cm-field{margin-bottom:14px}
+.cm-field label{display:block;font-family:var(--jp);font-weight:700;font-size:13px;color:var(--ink-2);margin-bottom:6px}
+.cm-field label .req{color:var(--accent);margin-left:3px}
+.cm-field input,.cm-field textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;
+  padding:12px 14px;font-family:var(--body);font-size:15px;color:var(--ink);background:#fff;transition:border-color .2s,box-shadow .2s}
+.cm-field input:focus,.cm-field textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,92,123,.15)}
+.cm-field textarea{resize:vertical;min-height:96px;line-height:1.7}
+.cm-submit{width:100%;margin-top:6px}
+.cm-alt{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;line-height:1.7}
+.cm-alt a{color:var(--accent);font-weight:600}
+.cm-err{font-size:12px;color:#c0392b;margin-top:8px;display:none}
+.cm-done{padding:46px 30px;text-align:center}
+.cm-done .ok{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;color:#fff}
+.cm-done .ok svg{width:32px;height:32px}
+.cm-done h3{font-family:var(--display);font-weight:700;color:var(--ink);font-size:22px;letter-spacing:.03em}
+.cm-done p{font-size:14px;color:var(--text);margin-top:12px;line-height:1.8}
+body.cm-lock{overflow:hidden}
+
 /* ============ guarantee ============ */
 .guarantee{padding:70px 0;background:var(--bg-soft);border-top:1px solid var(--line-soft)}
 .gbox{position:relative;max-width:680px;margin:0 auto;background:#fff;border:1.5px solid var(--pink-2);
@@ -394,7 +432,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
 <nav>
   <div class="wrap nav-in">
     <div class="logo"><img src="data:image/png;base64,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" alt="KIRINZ"></div>
-    <a class="nav-cta" href="mailto:info@kirinz.tokyo?subject=Instagram運用支援のお問い合わせ">
+    <a class="nav-cta" data-contact href="mailto:info@kirinz.tokyo?subject=Instagram運用支援のお問い合わせ">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
       無料相談
     </a>
@@ -432,7 +470,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
       </div>
 
       <div class="hero-btns">
-        <a class="btn btn-primary" href="mailto:info@kirinz.tokyo?subject=Instagram運用支援の無料相談">
+        <a class="btn btn-primary" data-contact href="mailto:info@kirinz.tokyo?subject=Instagram運用支援の無料相談">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           無料で相談する
         </a>
@@ -687,7 +725,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 5 5 9-11"/></svg>月次レポート・改善提案</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 5 5 9-11"/></svg>毎月150人以上の純増支援</span>
       </div>
-      <a class="btn btn-primary" href="mailto:info@kirinz.tokyo?subject=Instagram運用支援のお見積もり依頼">
+      <a class="btn btn-primary" data-contact href="mailto:info@kirinz.tokyo?subject=Instagram運用支援のお見積もり依頼">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
         まずは無料で相談する
       </a>
@@ -739,7 +777,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
   <div class="wrap">
     <p class="small reveal">フォロワーは単なる数字ではありません。</p>
     <h2 class="reveal">ビジネスを支え、<br><span class="ac">集客と成果を生み出す土台</span>です。</h2>
-    <a class="btn btn-primary reveal" href="mailto:info@kirinz.tokyo?subject=Instagram運用支援の無料相談">
+    <a class="btn btn-primary reveal" data-contact href="mailto:info@kirinz.tokyo?subject=Instagram運用支援の無料相談">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       無料で相談する
     </a>
@@ -771,6 +809,90 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
     const sib=[...el.parentElement.children].filter(c=>c.classList.contains('reveal'));
     el.style.transitionDelay=(sib.indexOf(el)%4*0.08)+'s';
     io.observe(el);
+  });
+</script>
+
+<!-- CONTACT MODAL -->
+<div class="cm-overlay" id="cmOverlay" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+  <div class="cm">
+    <button class="cm-close" id="cmClose" aria-label="閉じる"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div id="cmFormWrap">
+      <div class="cm-head">
+        <span class="eyebrow">Contact</span>
+        <h3 id="cmTitle">無料相談のお問い合わせ</h3>
+        <p>下記をご入力ください。担当より折り返しご連絡いたします。</p>
+      </div>
+      <div class="cm-body">
+        <form id="cmForm" novalidate>
+          <div class="cm-field"><label>お名前<span class="req">*</span></label><input type="text" name="name" required autocomplete="name"></div>
+          <div class="cm-field"><label>会社名・店舗名</label><input type="text" name="company" autocomplete="organization"></div>
+          <div class="cm-field"><label>メールアドレス<span class="req">*</span></label><input type="email" name="email" required autocomplete="email"></div>
+          <div class="cm-field"><label>電話番号（任意）</label><input type="tel" name="tel" autocomplete="tel"></div>
+          <div class="cm-field"><label>ご相談内容<span class="req">*</span></label><textarea name="message" required placeholder="例）Instagramの運用代行を検討しています。まずは話を聞きたいです。"></textarea></div>
+          <button type="submit" class="btn btn-primary cm-submit" id="cmSubmit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            この内容で送信する
+          </button>
+          <p class="cm-err" id="cmErr">必須項目（お名前・メール・ご相談内容）をご入力ください。</p>
+          <p class="cm-alt">うまく送信できない場合は <a href="mailto:info@kirinz.tokyo">info@kirinz.tokyo</a> まで</p>
+        </form>
+      </div>
+    </div>
+    <div class="cm-done" id="cmDone" style="display:none">
+      <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 5 5 9-11"/></svg></span>
+      <h3>送信しました</h3>
+      <p>お問い合わせありがとうございます。<br>担当より折り返しご連絡いたします。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ===== 問い合わせフォーム =====
+     CONTACT_ENDPOINT に GAS WebアプリのURLを入れると、その場で送信されます。
+     空のままでも、メール作成画面が開くフォールバックで動作します。 */
+  const CONTACT_ENDPOINT = ""; // 例: "https://script.google.com/macros/s/XXXX/exec"
+  const CONTACT_MAIL = "info@kirinz.tokyo";
+
+  const ov=document.getElementById('cmOverlay');
+  const formWrap=document.getElementById('cmFormWrap');
+  const done=document.getElementById('cmDone');
+  const form=document.getElementById('cmForm');
+  const errEl=document.getElementById('cmErr');
+  const submitBtn=document.getElementById('cmSubmit');
+  let lastFocus=null;
+
+  function openCm(e){ if(e)e.preventDefault(); lastFocus=document.activeElement;
+    formWrap.style.display=''; done.style.display='none'; errEl.style.display='none';
+    ov.classList.add('open'); document.body.classList.add('cm-lock');
+    setTimeout(()=>{const f=form.querySelector('input[name=name]'); if(f)f.focus();},250);
+  }
+  function closeCm(){ ov.classList.remove('open'); document.body.classList.remove('cm-lock'); if(lastFocus)lastFocus.focus(); }
+
+  document.querySelectorAll('[data-contact]').forEach(b=>b.addEventListener('click',openCm));
+  document.getElementById('cmClose').addEventListener('click',closeCm);
+  ov.addEventListener('click',e=>{if(e.target===ov)closeCm();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov.classList.contains('open'))closeCm();});
+
+  form.addEventListener('submit',async (e)=>{
+    e.preventDefault();
+    const d=Object.fromEntries(new FormData(form).entries());
+    if(!d.name||!d.email||!d.message){errEl.style.display='block';return;}
+    errEl.style.display='none';
+
+    if(!CONTACT_ENDPOINT){
+      // フォールバック：メール作成画面を開く
+      const body=`お名前：${d.name}\n会社名・店舗名：${d.company||''}\nメール：${d.email}\n電話：${d.tel||''}\n\nご相談内容：\n${d.message}`;
+      window.location.href=`mailto:${CONTACT_MAIL}?subject=${encodeURIComponent('Instagram運用支援の無料相談')}&body=${encodeURIComponent(body)}`;
+      formWrap.style.display='none'; done.style.display='block';
+      return;
+    }
+    submitBtn.disabled=true; submitBtn.style.opacity='.7';
+    try{
+      await fetch(CONTACT_ENDPOINT,{method:'POST',mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d)});
+    }catch(_){}
+    submitBtn.disabled=false; submitBtn.style.opacity='';
+    form.reset(); formWrap.style.display='none'; done.style.display='block';
   });
 </script>
 </body>
