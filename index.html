@@ -43,6 +43,7 @@ img{max-width:100%;display:block}
 body{line-break:strict}
 .lead,.sub,.why-card p,.sup-card p,.reason p,.vcard .cmt{word-break:keep-all;overflow-wrap:break-word}
 .nb{white-space:nowrap}
+.cms-text{word-break:auto-phrase;overflow-wrap:anywhere;text-wrap:pretty}
 h1,h2,.sec-title,.value .quote,.period,.closing h2{text-wrap:balance;word-break:auto-phrase}
 a{color:inherit;text-decoration:none}
 
@@ -330,7 +331,7 @@ nav{
 .cm-head .eyebrow{justify-content:flex-start}.cm-head .eyebrow::before{display:none}
 .cm-head h3{font-family:var(--display);font-weight:700;color:var(--ink);font-size:22px;margin-top:8px;letter-spacing:.03em}
 .cm-head p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.7}
-.cm-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;cursor:pointer;
+.cm-close{position:absolute;top:16px;right:16px;z-index:5;width:36px;height:36px;border:none;cursor:pointer;
   background:var(--bg-soft);border-radius:50%;color:var(--ink-2);display:grid;place-items:center;transition:background .2s}
 .cm-close:hover{background:var(--pink-2)}
 .cm-close svg{width:18px;height:18px}
@@ -894,6 +895,75 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
     submitBtn.disabled=false; submitBtn.style.opacity='';
     form.reset(); formWrap.style.display='none'; done.style.display='block';
   });
+</script>
+
+<script>
+  /* ===== スプレッドシートCMS（実績・お客様の声）=====
+     CMS_ENDPOINT に GAS WebアプリのURLを入れると、シートの内容で
+     「フォロワー増加実績」「お客様の声」が自動で置き換わります。
+     空のままなら、ページに最初から入っている内容がそのまま表示されます。 */
+  const CMS_ENDPOINT = ""; // 例: "https://script.google.com/macros/s/XXXX/exec"
+
+  const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const num=n=>{const v=Number(String(n).replace(/[^\d.-]/g,''));return isNaN(v)?String(n):v.toLocaleString('ja-JP');};
+  const GRAD=['linear-gradient(135deg,#7a2a24,#c46a4a)','linear-gradient(135deg,#d9d2cb,#a99f95)','linear-gradient(135deg,#5a3a22,#b07b40)','linear-gradient(135deg,#dfe3e6,#aeb6bd)','linear-gradient(135deg,#6e4a2a,#caa15e)'];
+  const STAR_F='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>';
+  const STAR_O='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 20.4l1.4-6.8L2.2 9l6.9-.7z"/></svg>';
+  const ARROW='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  function renderResults(rows){
+    if(!Array.isArray(rows)||!rows.length)return;
+    const wrap=document.querySelector('.case-scroll'); if(!wrap)return;
+    wrap.innerHTML=rows.map((r,i)=>{
+      const before=num(r.before), after=num(r.after);
+      const gain=(Number(String(r.after).replace(/[^\d.-]/g,''))||0)-(Number(String(r.before).replace(/[^\d.-]/g,''))||0);
+      const bg=r.image?`background-image:url(${esc(r.image)})`:`background-image:${GRAD[i%GRAD.length]}`;
+      const period=esc(r.period||'').replace(/^運用/,'').replace(/のフォロワー増加実績$/,'');
+      return `<div class="case reveal in">
+        <div class="case-head"><div class="biz">${esc(r.biz)}</div>${r.tag?`<span class="tag">${esc(r.tag)}</span>`:''}</div>
+        <div class="case-img" style="${bg}"></div>
+        <div class="case-body">
+          <p class="period cms-text">運用<b>${esc(period)}</b>のフォロワー増加実績</p>
+          <div class="ba">
+            <div class="col"><span class="lbl b">Before</span><div class="val">${before}<small>名</small></div></div>
+            <span class="arrow">${ARROW}</span>
+            <div class="col"><span class="lbl a">After</span><div class="val">${after}<small>名</small></div></div>
+          </div>
+          <div class="gain">+${gain.toLocaleString('ja-JP')}<span class="u">名</span><span class="ex">増加！</span></div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderVoices(rows){
+    if(!Array.isArray(rows)||!rows.length)return;
+    const wrap=document.querySelector('.voices-grid'); if(!wrap)return;
+    wrap.innerHTML=rows.map(r=>{
+      const rate=Math.max(0,Math.min(5,Math.round(Number(r.rating)||5)));
+      const stars=Array.from({length:5},(_,i)=>i<rate?STAR_F:STAR_O).join('');
+      const av=esc(r.avatar||(r.name?String(r.name).trim().charAt(0):'＊'));
+      return `<div class="vcard reveal in">
+        <span class="qm">&rdquo;</span>
+        <div class="stars">${stars}</div>
+        <p class="cmt cms-text">${esc(r.comment)}</p>
+        <div class="vhead"><span class="av">${av}</span><span class="who"><b>${esc(r.name)}</b><span>${esc(r.role)}</span></span></div>
+      </div>`;
+    }).join('');
+  }
+
+  window.__kirinzCMS=function(data){
+    try{
+      if(data&&data.results)renderResults(data.results);
+      if(data&&data.voices)renderVoices(data.voices);
+    }catch(e){/* 失敗時は既存表示のまま */}
+  };
+
+  if(CMS_ENDPOINT){
+    const s=document.createElement('script');
+    s.src=CMS_ENDPOINT+(CMS_ENDPOINT.includes('?')?'&':'?')+'callback=__kirinzCMS&_='+Date.now();
+    s.onerror=()=>{};
+    document.body.appendChild(s);
+  }
 </script>
 </body>
 </html>
