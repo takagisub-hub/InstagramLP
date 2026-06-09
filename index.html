@@ -914,10 +914,13 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
   function renderResults(rows){
     if(!Array.isArray(rows)||!rows.length)return;
     const wrap=document.querySelector('.case-scroll'); if(!wrap)return;
+    // 既存カードの埋め込み写真を「既定画像」として退避（URL未指定の行はこれを使う）
+    const defaults=[...wrap.querySelectorAll('.case-img')].map(el=>el.style.backgroundImage||'');
     wrap.innerHTML=rows.map((r,i)=>{
       const before=num(r.before), after=num(r.after);
       const gain=(Number(String(r.after).replace(/[^\d.-]/g,''))||0)-(Number(String(r.before).replace(/[^\d.-]/g,''))||0);
-      const bg=r.image?`background-image:url(${esc(r.image)})`:`background-image:${GRAD[i%GRAD.length]}`;
+      const bg=r.image?`background-image:url(${esc(r.image)})`
+              :(defaults[i]?`background-image:${defaults[i].replace(/"/g,"'")}`:`background-image:${GRAD[i%GRAD.length]}`);
       const period=esc(r.period||'').replace(/^運用/,'').replace(/のフォロワー増加実績$/,'');
       return `<div class="case reveal in">
         <div class="case-head"><div class="biz">${esc(r.biz)}</div>${r.tag?`<span class="tag">${esc(r.tag)}</span>`:''}</div>
