@@ -851,7 +851,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
   /* ===== 問い合わせフォーム =====
      CONTACT_ENDPOINT に GAS WebアプリのURLを入れると、その場で送信されます。
      空のままでも、メール作成画面が開くフォールバックで動作します。 */
-  const CONTACT_ENDPOINT = ""; // 例: "https://script.google.com/macros/s/XXXX/exec"
+  const CONTACT_ENDPOINT = "https://script.google.com/macros/s/AKfycbw_fKJw3HBjF0RaKkj6qA-fCNVCeHtIpYtTRAQq3ZAtvPgJSIxmfybsb1CMO-vbBKEUTw/exec"; // 例: "https://script.google.com/macros/s/XXXX/exec"
   const CONTACT_MAIL = "info@kirinz.tokyo";
 
   const ov=document.getElementById('cmOverlay');
@@ -902,7 +902,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
      CMS_ENDPOINT に GAS WebアプリのURLを入れると、シートの内容で
      「フォロワー増加実績」「お客様の声」が自動で置き換わります。
      空のままなら、ページに最初から入っている内容がそのまま表示されます。 */
-  const CMS_ENDPOINT = ""; // 例: "https://script.google.com/macros/s/XXXX/exec"
+  const CMS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw_fKJw3HBjF0RaKkj6qA-fCNVCeHtIpYtTRAQq3ZAtvPgJSIxmfybsb1CMO-vbBKEUTw/exec"; // 例: "https://script.google.com/macros/s/XXXX/exec"
 
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const num=n=>{const v=Number(String(n).replace(/[^\d.-]/g,''));return isNaN(v)?String(n):v.toLocaleString('ja-JP');};
