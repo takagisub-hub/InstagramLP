@@ -373,6 +373,12 @@ body.cm-lock{overflow:hidden}
 .gnote span{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-2);font-weight:500}
 .gnote svg{width:15px;height:15px;color:var(--accent)}
 .gfine{margin-top:18px;font-size:11.5px;color:var(--muted);line-height:1.7}
+.gcamp{margin-top:24px;text-align:left;background:var(--bg-soft);border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px}
+.gcamp h3{font-family:var(--jp);font-weight:700;font-size:15px;color:var(--ink);letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.gcamp h3 svg{width:18px;height:18px;color:var(--accent);flex:none}
+.gcamp ol{list-style:none;counter-reset:gc;margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.gcamp li{counter-increment:gc;position:relative;padding-left:30px;font-size:13.5px;color:var(--text);line-height:1.7}
+.gcamp li::before{content:counter(gc);position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--num);font-weight:700;font-size:11px;display:grid;place-items:center}
 
 /* ============ closing ============ */
 .closing{padding:84px 0;background:linear-gradient(160deg,var(--pink),#fff 70%);text-align:center}
@@ -762,13 +768,23 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
       <span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l7 3v6c0 4.5-3 8.2-7 9-4-.8-7-4.5-7-9V5z"/><path d="m9 12 2 2 4-4"/></svg></span>
       <span class="eyebrow" style="display:inline-flex;justify-content:center">Guarantee</span>
       <h2>成果が出なければ<span class="ac">全額返金</span></h2>
-      <p class="lead">運用開始後、<b>2ヶ月で300人増加</b>を達成できなかった場合は、<br>その月のご利用料金を全額返金いたします。安心してお試しください。</p>
+      <p class="lead">運用開始後、<b>毎月150人以上の純増</b>を達成できなかった場合は、<br>その月のご利用料金を全額返金いたします。安心してお試しください。</p>
       <div class="gnote">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 5 5 9-11"/></svg>初期費用0円</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 5 5 9-11"/></svg>契約期間の縛りなし</span>
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 5 5 9-11"/></svg>いつでも解約OK</span>
       </div>
-      <p class="gfine"></p>
+      <div class="gcamp">
+        <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>キャンペーン条件</h3>
+        <ol>
+          <li>運用開始前に投稿が10投稿以上あること</li>
+          <li>運用開始後、最低週2回投稿をしていただくこと</li>
+          <li>アンフォロー（フォロー解除）期間は適応しない</li>
+          <li>いいねのみ運用期間は適応しない</li>
+          <li>お客様側でフォロワーを削除した場合は適応しない</li>
+        </ol>
+      </div>
+      <p class="gfine">※ 返金条件・対象範囲の詳細はご契約前にご説明します。文言・条件はご状況に合わせて調整してください。</p>
     </div>
   </div>
 </section>
@@ -902,7 +918,7 @@ footer .cc{font-size:11.5px;color:var(--muted);margin-top:6px;letter-spacing:.04
      CMS_ENDPOINT に GAS WebアプリのURLを入れると、シートの内容で
      「フォロワー増加実績」「お客様の声」が自動で置き換わります。
      空のままなら、ページに最初から入っている内容がそのまま表示されます。 */
-  const CMS_ENDPOINT = "https://script.google.com/macros/s/AKfycbw_fKJw3HBjF0RaKkj6qA-fCNVCeHtIpYtTRAQq3ZAtvPgJSIxmfybsb1CMO-vbBKEUTw/exec"; // 例: "https://script.google.com/macros/s/XXXX/exec"
+  const CMS_ENDPOINT = "/cms"; // 例: "https://script.google.com/macros/s/XXXX/exec"
 
   const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const num=n=>{const v=Number(String(n).replace(/[^\d.-]/g,''));return isNaN(v)?String(n):v.toLocaleString('ja-JP');};
